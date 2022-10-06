@@ -1,2 +1,8 @@
-package fr.lernejo.logger;public class LoggerFactory {
+package fr.lernejo.logger;
+
+public class LoggerFactory {
+    public static Logger getLogger(String name){
+        var console = new ConsoleLogger();
+        return console;
+    }
 }
