@@ -3,14 +3,16 @@ package fr.lernejo.guessgame;
 import fr.lernejo.logger.Logger;
 import fr.lernejo.logger.LoggerFactory;
 
-import java.util.Scanner;
+import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
 
 public class Simulation {
 
     private final Logger logger = LoggerFactory.getLogger("simulation");
     private Player player;  //TODO add variable type
     private long numberToGuess; //TODO add variable type
-    private int i;
+    private long start;
+    private long end;
 
     public Simulation(Player player) {
         this.player = player;
@@ -20,6 +22,7 @@ public class Simulation {
     public void initialize(long numberToGuess) {
         //TODO implement me
         this.numberToGuess = numberToGuess;
+        this.start = System.currentTimeMillis();
     }
 
     /**
@@ -37,14 +40,31 @@ public class Simulation {
         }
     }
 
-    public void loopUntilPlayerSucceed() {
+    public void loopUntilPlayerSucceed(int maxIter) {
         //TODO implement me
         boolean success = nextRound();
 
+        int iter = 0;
         while (success == false){
-            this.i++;
+            iter++;
+            if (iter >= maxIter) {
+                System.out.println("Vous avez atteint le maximum d'iteration possible. Vous avez perdu la partie!!");
+                this.end = System.currentTimeMillis();
+                printGameDuration();
+                return;
+            }
             success = nextRound();
         }
-        System.out.println(" Bravooooo en " + this.i + " operations");
+        System.out.println(" Bravooooo en " + iter + " operations");
+        this.end = System.currentTimeMillis();
+        printGameDuration();
+    }
+
+    private void printGameDuration() {
+        long duration = this.end - this.start;
+        long minutes = duration / 1000 / 60;
+        long seconds = duration / 1000 - minutes * 60;
+        long milliseconds = duration - minutes * 60 * 1000 - seconds * 1000;
+        System.out.printf("Votre partie a duré %d:%d.%d\n", minutes, seconds, milliseconds);
     }
 }
