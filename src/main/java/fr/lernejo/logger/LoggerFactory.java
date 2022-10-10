@@ -5,4 +5,5 @@ public class LoggerFactory {
         var console = new ConsoleLogger();
         return console;
     }
+
 }
